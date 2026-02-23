@@ -16,6 +16,9 @@ export RECYCLARR_APP_DATA=/config/recyclarr
 mkdir -p /config/recyclarr
 
 # Wir nehmen den direkten, offiziellen Pfad
+echo "Suche recyclarr binary..."
+which recyclarr
+find / -name "recyclarr" -type f 2>/dev/null
 RECYCLARR_BIN="/app/recyclarr"
 
 echo "Prüfe Pfad..."
