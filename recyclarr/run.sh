@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Starte Recyclarr Add-on V6..."
+echo "Starte Recyclarr Add-on V7..."
 
 trap "echo 'Beende Add-on sauber...'; exit 0" SIGTERM SIGINT
 
@@ -15,11 +15,19 @@ SONARR_APIKEY=$(jq --raw-output '.sonarr_apikey' $CONFIG_PATH)
 export RECYCLARR_APP_DATA=/config/recyclarr
 mkdir -p /config/recyclarr
 
-echo "Suche Recyclarr..."
-# Sichere Suche, die in Alpine garantiert funktioniert
-RECYCLARR_BIN=$(find /app /usr /bin /sbin /opt -iname "recyclarr" -o -iname "Recyclarr.Cli" 2>/dev/null | grep -v "/config/" | head -n 1)
+# Wir nehmen den direkten, offiziellen Pfad
+RECYCLARR_BIN="/app/recyclarr"
 
-echo "Recyclarr gefunden unter: $RECYCLARR_BIN"
+echo "Prüfe Pfad..."
+if [ ! -f "$RECYCLARR_BIN" ]; then
+    echo "FEHLER: /app/recyclarr nicht gefunden! Das liegt wirklich im Ordner /app:"
+    ls -la /app
+    echo "Breche ab, da Programm fehlt."
+    sleep 3600
+    exit 1
+else
+    echo "Recyclarr erfolgreich gefunden unter: $RECYCLARR_BIN"
+fi
 
 if [ ! -f /config/recyclarr/recyclarr.yml ]; then
     echo "Erstelle Vorlage..."
