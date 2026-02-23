@@ -107,4 +107,54 @@ $PROFILES_HDR10
 EOF
     fi
 
-    if [ "$PREFER_HQ
+    if [ "$PREFER_HQ" = "true" ]; then
+        cat >> /config/recyclarr/recyclarr.yml << EOF
+      - trash_ids:
+          - e6819cba26759a536a10af3895ef69e9  # WEB Tier 01
+          - 58790d4e2fdcd9733aa7ae68ba2bb503  # WEB Tier 02
+        assign_scores_to:
+$PROFILES_HQ
+EOF
+    fi
+
+    if [ "$ENABLE_ATMOS" = "true" ]; then
+        cat >> /config/recyclarr/recyclarr.yml << EOF
+      - trash_ids:
+          - 496f355514737f7d83bf7aa4d24f8169  # TrueHD Atmos
+          - 2f22d89048b01681dde8afe203bf2e95  # DD+ Atmos
+        assign_scores_to:
+$PROFILES_ATMOS
+EOF
+    fi
+
+    if [ "$ENABLE_TRUEHD" = "true" ]; then
+        cat >> /config/recyclarr/recyclarr.yml << EOF
+      - trash_ids:
+          - 3cafb66171b47f226146a0770576870f  # TrueHD
+          - dcf3ec6938fa32445f590a4da84256cd  # DTS-HD MA
+        assign_scores_to:
+$PROFILES_TRUEHD
+EOF
+    fi
+}
+
+# Config zurücksetzen
+> /config/recyclarr/recyclarr.yml
+
+if [ "$SONARR_URL" != "" ] && [ "$SONARR_URL" != "null" ]; then
+    write_instance "$SONARR_URL" "$SONARR_APIKEY" "sonarr" "series"
+fi
+
+if [ "$RADARR_URL" != "" ] && [ "$RADARR_URL" != "null" ]; then
+    write_instance "$RADARR_URL" "$RADARR_APIKEY" "radarr" "movies"
+fi
+
+echo "recyclarr.yml erstellt:"
+cat /config/recyclarr/recyclarr.yml
+
+while true; do
+    echo "Führe TRaSH-Guide Sync aus..."
+    $RECYCLARR_BIN sync
+    echo "Sync beendet. Nächster Lauf in 24 Stunden."
+    sleep 86400
+done
