@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Starte Recyclarr Add-on V7.1..."
+echo "Starte Recyclarr Add-on V7.2..."
 
 trap "echo 'Beende Add-on sauber...'; exit 0" SIGTERM SIGINT
 
@@ -19,7 +19,7 @@ mkdir -p /config/recyclarr
 echo "Suche recyclarr binary..."
 which recyclarr
 find / -name "recyclarr" -type f 2>/dev/null
-RECYCLARR_BIN="/app/recyclarr"
+RECYCLARR_BIN="/app/recyclarr/recyclarr""
 
 echo "Prüfe Pfad..."
 if [ ! -f "$RECYCLARR_BIN" ]; then
