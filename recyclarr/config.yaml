@@ -1,10 +1,12 @@
 name: Recyclarr
-version: "8.7.0"
+version: "8.7.1"
 slug: recyclarr
 description: TRaSH-Guide Sync für Sonarr und Radarr
 arch:
   - amd64
   - aarch64
+map:
+  - config:rw
 options:
   sonarr_url: ""
   sonarr_apikey: ""
