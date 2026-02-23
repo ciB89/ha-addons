@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Starte Recyclarr Add-on V9.4..."
+echo "Starte Recyclarr Add-on V9.5..."
 trap "echo 'Beende Add-on sauber...'; exit 0" SIGTERM SIGINT
 
 CONFIG_PATH=/data/options.json
@@ -17,6 +17,7 @@ RADARR_URL=$(jq --raw-output '.radarr_url' $CONFIG_PATH)
 RADARR_APIKEY=$(jq --raw-output '.radarr_apikey' $CONFIG_PATH)
 RADARR_1080P=$(jq --raw-output '.radarr_profile_1080p' $CONFIG_PATH)
 RADARR_4K=$(jq --raw-output '.radarr_profile_4k' $CONFIG_PATH)
+ENABLE_REMUX=$(jq --raw-output '.enable_remux' $CONFIG_PATH)
 ENABLE_HDR=$(jq --raw-output '.enable_hdr' $CONFIG_PATH)
 ENABLE_DV=$(jq --raw-output '.enable_dv' $CONFIG_PATH)
 ENABLE_ATMOS=$(jq --raw-output '.enable_atmos' $CONFIG_PATH)
@@ -28,7 +29,7 @@ export RECYCLARR_CONFIG_DIR=/data/recyclarr
 mkdir -p /data/recyclarr
 RECYCLARR_BIN="/app/recyclarr/recyclarr"
 
-# ID aus Liste holen - Format: "│ Name    ID │"
+# ID aus Liste holen
 get_id() {
     local SERVICE=$1
     local NAME=$2
@@ -118,6 +119,8 @@ if [ "$SONARR_URL" != "" ] && [ "$SONARR_URL" != "null" ]; then
     SONARR_ACTIVE_PROFILES=()
     [ "$SONARR_1080P" = "true" ] && SONARR_ACTIVE_PROFILES+=("9d142234e45d6143785ac55f5a9e8dc9")
     [ "$SONARR_2160P" = "true" ] && SONARR_ACTIVE_PROFILES+=("dfa5eaae7894077ad6449169b6eb03e0")
+    [ "$ENABLE_REMUX" = "true" ] && SONARR_ACTIVE_PROFILES+=("a3a7b7b2b4fd8d8d28f25f0a75c4aa59")
+    [ "$ENABLE_REMUX" = "true" ] && SONARR_ACTIVE_PROFILES+=("85c61753df5da1fb2aab6f2a47426b09")
 
     cat >> /data/recyclarr/recyclarr.yml << EOF
 sonarr:
@@ -129,6 +132,7 @@ sonarr:
       type: series
     quality_profiles:
 EOF
+
     [ "$SONARR_1080P" = "true" ] && cat >> /data/recyclarr/recyclarr.yml << EOF
       - trash_id: 9d142234e45d6143785ac55f5a9e8dc9  # WEB-1080p
         reset_unmatched_scores:
@@ -136,6 +140,14 @@ EOF
 EOF
     [ "$SONARR_2160P" = "true" ] && cat >> /data/recyclarr/recyclarr.yml << EOF
       - trash_id: dfa5eaae7894077ad6449169b6eb03e0  # WEB-2160p
+        reset_unmatched_scores:
+          enabled: true
+EOF
+    [ "$ENABLE_REMUX" = "true" ] && cat >> /data/recyclarr/recyclarr.yml << EOF
+      - trash_id: a3a7b7b2b4fd8d8d28f25f0a75c4aa59  # Remux + WEB 1080p
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: 85c61753df5da1fb2aab6f2a47426b09  # Remux + WEB 2160p
         reset_unmatched_scores:
           enabled: true
 EOF
@@ -186,6 +198,8 @@ if [ "$RADARR_URL" != "" ] && [ "$RADARR_URL" != "null" ]; then
     RADARR_ACTIVE_PROFILES=()
     [ "$RADARR_1080P" = "true" ] && RADARR_ACTIVE_PROFILES+=("d1d67249d3890e49bc12e275d989a7e9")
     [ "$RADARR_4K" = "true" ] && RADARR_ACTIVE_PROFILES+=("64fb5f9858489bdac2af690e27c8f42f")
+    [ "$ENABLE_REMUX" = "true" ] && RADARR_ACTIVE_PROFILES+=("9ca12ea80aa55ef916e3751f4b874151")
+    [ "$ENABLE_REMUX" = "true" ] && RADARR_ACTIVE_PROFILES+=("fd161a61e3ab826d3a22d53f935696dd")
 
     cat >> /data/recyclarr/recyclarr.yml << EOF
 radarr:
@@ -197,6 +211,7 @@ radarr:
       type: movie
     quality_profiles:
 EOF
+
     [ "$RADARR_1080P" = "true" ] && cat >> /data/recyclarr/recyclarr.yml << EOF
       - trash_id: d1d67249d3890e49bc12e275d989a7e9  # HD Bluray + WEB
         reset_unmatched_scores:
@@ -204,6 +219,14 @@ EOF
 EOF
     [ "$RADARR_4K" = "true" ] && cat >> /data/recyclarr/recyclarr.yml << EOF
       - trash_id: 64fb5f9858489bdac2af690e27c8f42f  # UHD Bluray + WEB
+        reset_unmatched_scores:
+          enabled: true
+EOF
+    [ "$ENABLE_REMUX" = "true" ] && cat >> /data/recyclarr/recyclarr.yml << EOF
+      - trash_id: 9ca12ea80aa55ef916e3751f4b874151  # Remux + WEB 1080p
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: fd161a61e3ab826d3a22d53f935696dd  # Remux + WEB 2160p
         reset_unmatched_scores:
           enabled: true
 EOF
