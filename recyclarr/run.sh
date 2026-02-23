@@ -34,7 +34,7 @@ get_id() {
     local NAME=$2
     $RECYCLARR_BIN list custom-formats $SERVICE 2>/dev/null \
         | grep "│ $NAME " \
-        | grep -oP '[a-f0-9]{32}' \
+        | grep -oE '[a-f0-9]{32}' \
         | head -1
 }
 
