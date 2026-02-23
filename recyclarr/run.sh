@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Starte Recyclarr Add-on V8.5..."
+echo "Starte Recyclarr Add-on V8.6..."
 trap "echo 'Beende Add-on sauber...'; exit 0" SIGTERM SIGINT
 
 CONFIG_PATH=/data/options.json
@@ -67,7 +67,7 @@ $(echo -e "$PROFILES_BLOCK")
           - 82d40da2bc6923f41e149b7e688e122e  # No-RlsGroup
           - e1a997ddb54e3ecbfe06341ad323c458  # Obfuscated
           - 06d66ab109d4d2eddb2794d21526d140  # Retags
-        quality_profiles:
+        assign_scores_to:
 $PROFILES_NEG
 EOF
 
@@ -75,7 +75,7 @@ EOF
         cat >> /config/recyclarr/recyclarr.yml << EOF
       - trash_ids:
           - 9c38ebb7384dada637be8899efa68e6f  # x265 (HD)
-        quality_profiles:
+        assign_scores_to:
 $PROFILES_NEG
 EOF
     fi
@@ -84,7 +84,7 @@ EOF
         cat >> /config/recyclarr/recyclarr.yml << EOF
       - trash_ids:
           - 3cce5f79b4f9f5fb7f3b4ac4c8d68cf7  # HDR
-        quality_profiles:
+        assign_scores_to:
 $PROFILES_HDR
 EOF
     fi
@@ -93,7 +93,7 @@ EOF
         cat >> /config/recyclarr/recyclarr.yml << EOF
       - trash_ids:
           - 585c8b55df8f3b8fd8d3b563c5ec8b99  # Dolby Vision
-        quality_profiles:
+        assign_scores_to:
 $PROFILES_DV
 EOF
     fi
@@ -102,59 +102,9 @@ EOF
         cat >> /config/recyclarr/recyclarr.yml << EOF
       - trash_ids:
           - e61e28db5d5f0b21e4b4f0f9b7e71a42  # HDR10+
-        quality_profiles:
+        assign_scores_to:
 $PROFILES_HDR10
 EOF
     fi
 
-    if [ "$PREFER_HQ" = "true" ]; then
-        cat >> /config/recyclarr/recyclarr.yml << EOF
-      - trash_ids:
-          - e6819cba26759a536a10af3895ef69e9  # WEB Tier 01
-          - 58790d4e2fdcd9733aa7ae68ba2bb503  # WEB Tier 02
-        quality_profiles:
-$PROFILES_HQ
-EOF
-    fi
-
-    if [ "$ENABLE_ATMOS" = "true" ]; then
-        cat >> /config/recyclarr/recyclarr.yml << EOF
-      - trash_ids:
-          - 496f355514737f7d83bf7aa4d24f8169  # TrueHD Atmos
-          - 2f22d89048b01681dde8afe203bf2e95  # DD+ Atmos
-        quality_profiles:
-$PROFILES_ATMOS
-EOF
-    fi
-
-    if [ "$ENABLE_TRUEHD" = "true" ]; then
-        cat >> /config/recyclarr/recyclarr.yml << EOF
-      - trash_ids:
-          - 3cafb66171b47f226146a0770576870f  # TrueHD
-          - dcf3ec6938fa32445f590a4da84256cd  # DTS-HD MA
-        quality_profiles:
-$PROFILES_TRUEHD
-EOF
-    fi
-}
-
-# Config zurücksetzen
-> /config/recyclarr/recyclarr.yml
-
-if [ "$SONARR_URL" != "" ] && [ "$SONARR_URL" != "null" ]; then
-    write_instance "$SONARR_URL" "$SONARR_APIKEY" "sonarr" "series"
-fi
-
-if [ "$RADARR_URL" != "" ] && [ "$RADARR_URL" != "null" ]; then
-    write_instance "$RADARR_URL" "$RADARR_APIKEY" "radarr" "movies"
-fi
-
-echo "recyclarr.yml erstellt:"
-cat /config/recyclarr/recyclarr.yml
-
-while true; do
-    echo "Führe TRaSH-Guide Sync aus..."
-    $RECYCLARR_BIN sync
-    echo "Sync beendet. Nächster Lauf in 24 Stunden."
-    sleep 86400
-done
+    if [ "$PREFER_HQ
