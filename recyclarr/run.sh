@@ -116,11 +116,10 @@ EOF
 # --- SONARR ---
 if [ "$SONARR_URL" != "" ] && [ "$SONARR_URL" != "null" ]; then
 
+    # Sonarr hat keine Remux-Profile – nur WEB
     SONARR_ACTIVE_PROFILES=()
     [ "$SONARR_1080P" = "true" ] && SONARR_ACTIVE_PROFILES+=("9d142234e45d6143785ac55f5a9e8dc9")
     [ "$SONARR_2160P" = "true" ] && SONARR_ACTIVE_PROFILES+=("dfa5eaae7894077ad6449169b6eb03e0")
-    [ "$ENABLE_REMUX" = "true" ] && SONARR_ACTIVE_PROFILES+=("a3a7b7b2b4fd8d8d28f25f0a75c4aa59")
-    [ "$ENABLE_REMUX" = "true" ] && SONARR_ACTIVE_PROFILES+=("85c61753df5da1fb2aab6f2a47426b09")
 
     cat >> /data/recyclarr/recyclarr.yml << EOF
 sonarr:
@@ -134,20 +133,12 @@ sonarr:
 EOF
 
     [ "$SONARR_1080P" = "true" ] && cat >> /data/recyclarr/recyclarr.yml << EOF
-      - trash_id: 9d142234e45d6143785ac55f5a9e8dc9  # WEB-1080p
+      - trash_id: 9d142234e45d6143785ac55f5a9e8dc9  # WEB-1080p (Alternative)
         reset_unmatched_scores:
           enabled: true
 EOF
     [ "$SONARR_2160P" = "true" ] && cat >> /data/recyclarr/recyclarr.yml << EOF
-      - trash_id: dfa5eaae7894077ad6449169b6eb03e0  # WEB-2160p
-        reset_unmatched_scores:
-          enabled: true
-EOF
-    [ "$ENABLE_REMUX" = "true" ] && cat >> /data/recyclarr/recyclarr.yml << EOF
-      - trash_id: a3a7b7b2b4fd8d8d28f25f0a75c4aa59  # Remux + WEB 1080p
-        reset_unmatched_scores:
-          enabled: true
-      - trash_id: 85c61753df5da1fb2aab6f2a47426b09  # Remux + WEB 2160p
+      - trash_id: dfa5eaae7894077ad6449169b6eb03e0  # WEB-2160p (Alternative)
         reset_unmatched_scores:
           enabled: true
 EOF
