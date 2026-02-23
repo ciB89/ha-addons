@@ -12,7 +12,7 @@ fi
 SONARR_URL=$(jq --raw-output '.sonarr_url' $CONFIG_PATH)
 SONARR_APIKEY=$(jq --raw-output '.sonarr_apikey' $CONFIG_PATH)
 
-export RECYCLARR_APP_DATA=/config/recyclarr
+export RECYCLARR_CONFIG_DIR=/config/recyclarr
 mkdir -p /config/recyclarr
 
 # Wir nehmen den direkten, offiziellen Pfad
