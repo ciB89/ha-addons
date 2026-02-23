@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Starte Recyclarr Add-on V7..."
+echo "Starte Recyclarr Add-on V7.1..."
 
 trap "echo 'Beende Add-on sauber...'; exit 0" SIGTERM SIGINT
 
