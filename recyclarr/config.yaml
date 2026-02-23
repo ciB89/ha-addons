@@ -6,7 +6,8 @@ arch:
   - amd64
   - aarch64
 map:
-  - config:rw
+  - type: config
+    read_only: false
 options:
   sonarr_url: ""
   sonarr_apikey: ""
