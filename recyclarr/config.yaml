@@ -1,21 +1,21 @@
-name: "Recyclarr"
-description: "Automatischer TRaSH-Guides Sync für Sonarr und Radarr"
-version: "1.0.5"
-slug: "recyclarr"
-init: false
+name: Recyclarr
+version: "8.0.0"
+slug: recyclarr
+description: TRaSH-Guide Sync für Sonarr und Radarr
 arch:
-  - aarch64
   - amd64
-startup: application
-boot: auto
-map:
-  - config:rw
-host_network: true
+  - aarch64
 options:
-  sonarr_url: "http://192.168.X.X:8989"
-  sonarr_apikey: "DEIN_API_KEY_HIER"
-  log_level: "info"
+  sonarr_url: ""
+  sonarr_apikey: ""
+  radarr_url: ""
+  radarr_apikey: ""
+  quality_profile: "HD-1080p"
+  custom_formats: true
 schema:
   sonarr_url: str
-  sonarr_apikey: password
-  log_level: list(debug|info|warning|error)
+  sonarr_apikey: str
+  radarr_url: str
+  radarr_apikey: str
+  quality_profile: str
+  custom_formats: bool
