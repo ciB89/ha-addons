@@ -1,6 +1,6 @@
 name: "Recyclarr"
 description: "Automatischer TRaSH-Guides Sync für Sonarr und Radarr"
-version: "1.0.1"
+version: "1.0.4"
 slug: "recyclarr"
 init: false
 arch:
@@ -10,8 +10,9 @@ startup: application
 boot: auto
 map:
   - config:rw
+host_network: true
 options:
-  sonarr_url: "http://DEINE_IP:8989"
+  sonarr_url: "http://192.168.X.X:8989"
   sonarr_apikey: "DEIN_API_KEY_HIER"
   log_level: "info"
 schema:
