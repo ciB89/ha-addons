@@ -1,10 +1,7 @@
-ARG BUILD_FROM=ghcr.io/recyclarr/recyclarr:latest
-FROM $BUILD_FROM
+# Zwingt HA, das ECHTE Recyclarr zu nutzen, keine Variablen mehr!
+FROM ghcr.io/recyclarr/recyclarr:latest
 
-# WICHTIG: Überschreibt den fehlerhaften Startbefehl des Basis-Images!
 ENTRYPOINT []
-
-# Installiere jq und bash
 RUN apk add --no-cache jq bash
 
 ENV RECYCLARR_APP_DATA=/config/recyclarr
