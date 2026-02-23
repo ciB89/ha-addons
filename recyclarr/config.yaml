@@ -1,5 +1,5 @@
 name: Recyclarr
-version: "9.3.0"
+version: "9.4.0"
 slug: recyclarr
 description: TRaSH-Guide Sync für Sonarr und Radarr
 arch:
@@ -18,6 +18,7 @@ options:
   enable_dv: false
   enable_atmos: false
   enable_truehd: false
+  enable_surround: false
   prefer_hq_groups: false
 schema:
   sonarr_url: str
@@ -32,4 +33,5 @@ schema:
   enable_dv: bool
   enable_atmos: bool
   enable_truehd: bool
+  enable_surround: bool
   prefer_hq_groups: bool
