@@ -1,5 +1,5 @@
 name: Recyclarr
-version: "9.4.0"
+version: "9.5.0"
 slug: recyclarr
 description: TRaSH-Guide Sync für Sonarr und Radarr
 arch:
@@ -14,6 +14,7 @@ options:
   radarr_apikey: ""
   radarr_profile_1080p: true
   radarr_profile_4k: false
+  enable_remux: false
   enable_hdr: false
   enable_dv: false
   enable_atmos: false
@@ -29,6 +30,7 @@ schema:
   radarr_apikey: str
   radarr_profile_1080p: bool
   radarr_profile_4k: bool
+  enable_remux: bool
   enable_hdr: bool
   enable_dv: bool
   enable_atmos: bool
