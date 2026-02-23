@@ -1,5 +1,5 @@
 name: Recyclarr
-version: "8.0.0"
+version: "8.3.0"
 slug: recyclarr
 description: TRaSH-Guide Sync für Sonarr und Radarr
 arch:
@@ -10,12 +10,23 @@ options:
   sonarr_apikey: ""
   radarr_url: ""
   radarr_apikey: ""
-  quality_profile: "HD-1080p"
-  custom_formats: true
+  quality_profiles: "HD-1080p"
+  # Unwanted - immer aktiv (versteckt, kein Toggle nötig)
+  # Optional: HDR-Formate
+  enable_hdr: false
+  enable_dv: false
+  enable_hdr10plus: false
+  # Optional: Sonstiges
+  prefer_hq_groups: false
+  block_x265_hd: false
 schema:
   sonarr_url: str
   sonarr_apikey: str
   radarr_url: str
   radarr_apikey: str
-  quality_profile: str
-  custom_formats: bool
+  quality_profiles: str
+  enable_hdr: bool
+  enable_dv: bool
+  enable_hdr10plus: bool
+  prefer_hq_groups: bool
+  block_x265_hd: bool
