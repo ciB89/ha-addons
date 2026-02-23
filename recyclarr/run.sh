@@ -1,43 +1,34 @@
 #!/bin/bash
-echo "Starte Recyclarr Add-on für Home Assistant..."
+echo "Starte Recyclarr Add-on V6..."
 
 trap "echo 'Beende Add-on sauber...'; exit 0" SIGTERM SIGINT
 
 CONFIG_PATH=/data/options.json
 
 if [ ! -f "$CONFIG_PATH" ]; then
-    echo "Warte auf Home Assistant Konfiguration..."
     sleep 5
 fi
 
 SONARR_URL=$(jq --raw-output '.sonarr_url' $CONFIG_PATH)
 SONARR_APIKEY=$(jq --raw-output '.sonarr_apikey' $CONFIG_PATH)
-LOG_LEVEL=$(jq --raw-output '.log_level' $CONFIG_PATH)
 
-echo "Konfiguration geladen. Log-Level: $LOG_LEVEL"
-
+export RECYCLARR_APP_DATA=/config/recyclarr
 mkdir -p /config/recyclarr
 
-# Wir nutzen den direkten Pfad zum Programm
-RECYCLARR_BIN="/app/recyclarr"
+echo "Suche Recyclarr..."
+# Sichere Suche, die in Alpine garantiert funktioniert
+RECYCLARR_BIN=$(find /app /usr /bin /sbin /opt -iname "recyclarr" -o -iname "Recyclarr.Cli" 2>/dev/null | grep -v "/config/" | head -n 1)
 
-# Automatischer Fallback: Falls der Ordner anders heißt, sucht das Skript die Datei selbst
-if [ ! -f "$RECYCLARR_BIN" ]; then
-    echo "Standard-Pfad nicht gefunden. Suche nach ausführbarer Datei..."
-    RECYCLARR_BIN=$(find / -type f -name "recyclarr" | head -n 1)
-    echo "Recyclarr gefunden unter: $RECYCLARR_BIN"
-fi
+echo "Recyclarr gefunden unter: $RECYCLARR_BIN"
 
-# Erstelle Vorlage
 if [ ! -f /config/recyclarr/recyclarr.yml ]; then
-    echo "Erstelle Basis-Vorlage..."
+    echo "Erstelle Vorlage..."
     $RECYCLARR_BIN config create
 fi
 
 export RECYCLARR_SONARR_URL="$SONARR_URL"
 export RECYCLARR_SONARR_API_KEY="$SONARR_APIKEY"
 
-# Hauptschleife
 while true; do
     echo "Führe TRaSH-Guide Sync aus..."
     $RECYCLARR_BIN sync
