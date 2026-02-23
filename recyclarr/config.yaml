@@ -1,6 +1,6 @@
 name: "Recyclarr"
 description: "Automatischer TRaSH-Guides Sync für Sonarr und Radarr"
-version: "1.0.4"
+version: "1.0.5"
 slug: "recyclarr"
 init: false
 arch:
